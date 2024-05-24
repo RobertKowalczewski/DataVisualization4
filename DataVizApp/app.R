@@ -1,7 +1,5 @@
 library(shiny)
 library(shinythemes)
-library(dplyr)
-library(tidyr)
 library(ggplot2)
 
 log_transform <- function(x) {
@@ -12,6 +10,7 @@ normalize <- function(x) {
 } 
 
 data = read.csv("../data/games.csv")
+
 data_separated_genres = data %>%
   separate_rows(Genres, sep = ",")
 genres = c((count(data_separated_genres, Genres) %>% filter(n > 100))$Genres)
@@ -76,6 +75,8 @@ server <- function(input, output) {
   
   output$violinPlots = renderPlot({
     data_filtered = data_separated_genres %>% filter(Genres %in% input$violinGenres) %>% filter(Peak.CCU>0) %>% filter(Average.playtime.forever>0)
+    data_filtered = data_filtered[,c("Peak.CCU", )]
+    
     ggplot(data_filtered, aes(Genres, Average.playtime.forever)) + geom_violin(fill="white") + geom_jitter(alpha=0.2)  + coord_flip()
   })
 }
