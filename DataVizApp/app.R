@@ -4,6 +4,8 @@ library(ggplot2)
 library(dplyr)
 library(tidyverse)
 library(tidyr)
+library(plotly)
+
 
 log_transform <- function(x) {
   return(log1p(x))  # log1p is log(1 + x) to handle zero values
@@ -17,7 +19,11 @@ data = read.csv("../data/games.csv")
 
 data_separated_genres = data %>%
   separate_rows(Genres, sep = ",")
-genres = c((count(data_separated_genres, Genres) %>% filter(n > 100))$Genres)
+
+genres = count(data_separated_genres, Genres) %>%
+  filter(n > 100) %>%
+  arrange(desc(n)) %>%
+  pull(Genres)
 
 list_genres = list()
 for (g in genres) {
@@ -30,6 +36,7 @@ for (g in genres) {
 violin_x = c("Peak.CCU", "Metacritic.score", "Positive", "Negative")
 
 # Define UI for application that draws a histogram
+# Define UI for application that draws a histogram
 ui <- fluidPage(theme = shinytheme("united"),
                 navbarPage(
                   "Steam games",
@@ -37,25 +44,27 @@ ui <- fluidPage(theme = shinytheme("united"),
                            sidebarLayout(
                              position = "right",
                              sidebarPanel(
-                               style = "height: 400px; overflow-y: scroll;",
+                               style = "height: 800px; overflow-y: scroll;",
+                               wellPanel(
+                                 selectInput(
+                                   inputId = "violinChoice",
+                                   label = "Metric:",
+                                   choices = violin_x
+                                 )
+                               ),
                                checkboxGroupInput(
                                  inputId = "violinGenres",
                                  label = "Genres:",
                                  choices = list_genres
-                               )
+                               ),
+                               width=4
                              ),
                              mainPanel(
                                wellPanel(
-                                 style = "height: 400px; overflow-y: scroll;",
-                                 plotOutput("violinPlots")
+                                 style = "height: 800px; overflow-y: scroll;",
+                                 plotlyOutput("violinPlots"),
+                                 #verbatimTextOutput("hover_info")
                                ),
-                               wellPanel(
-                                 selectInput(
-                                   inputId = "violinChoice",
-                                   label = "Select:",
-                                   choices = violin_x
-                                 )
-                               )
                              )
                            )
                   ),
@@ -86,12 +95,34 @@ ui <- fluidPage(theme = shinytheme("united"),
 
 server <- function(input, output) {
   
-  output$violinPlots = renderPlot({
-    data_filtered = data_separated_genres %>% filter(Genres %in% input$violinGenres) %>% filter(Peak.CCU>0) %>% filter(Average.playtime.forever>0)
-    #data_filtered = data_filtered[,c("Genres","Peak.CCU", "Metacritic.score", "Positive", "Negative")]
+  #output$violinPlots = renderPlot({
+  #  data_filtered = data_separated_genres %>% filter(Genres %in% input$violinGenres) %>% filter(.data[[input$violinChoice]] > 0)
+  #  
+  #  
+  #  ggplot(data_filtered, aes(Genres, normalize(log_transform(.data[[input$violinChoice]])))) + geom_violin(fill="white") + geom_jitter(alpha=0.2)  + coord_flip()
+  #})
+  
+  
+  output$violinPlots =  renderPlotly({
+    data_filtered = data_separated_genres %>% filter(Genres %in% input$violinGenres) %>% filter(.data[[input$violinChoice]] > 0)
+    p <- ggplot(data_filtered, aes(x=Genres, 
+                                   y=normalize(log_transform(.data[[input$violinChoice]])))) + 
+      geom_violin(fill="white") + 
+      geom_point(alpha=0.2)  + 
+      coord_flip()
     
-    ggplot(data_filtered, aes(Genres, .data[[input$violinChoice]])) + geom_violin(fill="white") + geom_jitter(alpha=0.2)  + coord_flip()
+    p_plotly = ggplotly(p)
   })
+  
+  #output$hover_info <- renderPrint({
+  #  data_filtered = data_separated_genres %>% filter(Genres %in% input$violinGenres) %>% filter(.data[[input$violinChoice]] > 0)
+  #  
+  #  hover_data <- event_data("plotly_hover")
+  #  if (!is.null(hover_data)) {
+  #    point_index <- hover_data$pointNumber
+  #    paste(data_filtered$Name[point_index])
+  #  }
+  #})
 }
 
 # Run the application 
