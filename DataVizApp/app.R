@@ -1,6 +1,9 @@
 library(shiny)
 library(shinythemes)
 library(ggplot2)
+library(dplyr)
+library(tidyverse)
+library(tidyr)
 
 log_transform <- function(x) {
   return(log1p(x))  # log1p is log(1 + x) to handle zero values
@@ -10,6 +13,7 @@ normalize <- function(x) {
 } 
 
 data = read.csv("../data/games.csv")
+
 
 data_separated_genres = data %>%
   separate_rows(Genres, sep = ",")
@@ -22,6 +26,8 @@ for (g in genres) {
   }
 
 }
+
+violin_x = c("Peak.CCU", "Metacritic.score", "Positive", "Negative")
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(theme = shinytheme("united"),
@@ -42,6 +48,13 @@ ui <- fluidPage(theme = shinytheme("united"),
                                wellPanel(
                                  style = "height: 400px; overflow-y: scroll;",
                                  plotOutput("violinPlots")
+                               ),
+                               wellPanel(
+                                 selectInput(
+                                   inputId = "violinChoice",
+                                   label = "Select:",
+                                   choices = violin_x
+                                 )
                                )
                              )
                            )
@@ -75,9 +88,9 @@ server <- function(input, output) {
   
   output$violinPlots = renderPlot({
     data_filtered = data_separated_genres %>% filter(Genres %in% input$violinGenres) %>% filter(Peak.CCU>0) %>% filter(Average.playtime.forever>0)
-    data_filtered = data_filtered[,c("Peak.CCU", )]
+    #data_filtered = data_filtered[,c("Genres","Peak.CCU", "Metacritic.score", "Positive", "Negative")]
     
-    ggplot(data_filtered, aes(Genres, Average.playtime.forever)) + geom_violin(fill="white") + geom_jitter(alpha=0.2)  + coord_flip()
+    ggplot(data_filtered, aes(Genres, .data[[input$violinChoice]])) + geom_violin(fill="white") + geom_jitter(alpha=0.2)  + coord_flip()
   })
 }
 
