@@ -86,8 +86,63 @@ ui <- fluidPage(
                )
              )
     ),
+    tabPanel("by year",
+             sidebarLayout(
+               position = "right",
+               sidebarPanel(
+                 style = "height: 600px; overflow-y: scroll;",
+                 sliderInput(
+                   inputId="yearSlider",
+                   label="release year:",
+                   min=2007,
+                   max=2024,
+                   value=0
+                 ),
+                 checkboxGroupInput(
+                   inputId = "yearGenres",
+                   label = "Genres:",
+                   choices = list_genres
+                 ),
+                 width = 4
+               ),
+               mainPanel(
+                 wellPanel(
+                   style = "height: 600px; overflow-y: scroll;",
+                   plotlyOutput("datePlot")
+                 )
+               )
+             )
+    ),
+    tabPanel("by playtime",
+             sidebarLayout(
+               position = "right",
+               sidebarPanel(
+                 style = "height: 600px; overflow-y: scroll;",
+                 sliderInput(
+                   inputId="playtimeSlider",
+                   label="average playtime (in hours):",
+                   min=0,
+                   max=1000,
+                   value=0
+                 ),
+                 checkboxInput("over1000", "1000+ hours", value=F),
+                 checkboxGroupInput(
+                   inputId = "priceGenres",
+                   label = "Genres:",
+                   choices = list_genres
+                 ),
+                 width = 4
+               ),
+               mainPanel(
+                 wellPanel(
+                   style = "height: 600px; overflow-y: scroll;",
+                   plotlyOutput("pricePlot")
+                 )
+               )
+             )
+    ),
     tabPanel("other",
-             "coming soon..."
+             "to be continued..."
     )
   )
 )
