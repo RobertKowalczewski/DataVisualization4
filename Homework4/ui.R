@@ -12,7 +12,7 @@ ui <- fluidPage(
              sidebarLayout(
                position = "right",
                sidebarPanel(
-                 style = "height: 800px; overflow-y: scroll;",
+                 style = "height: 600px; overflow-y: scroll;",
                  wellPanel(
                    selectInput(
                      inputId = "violinChoice",
@@ -29,33 +29,65 @@ ui <- fluidPage(
                ),
                mainPanel(
                  wellPanel(
-                   style = "height: 800px; overflow-y: scroll;",
-                   plotlyOutput("violinPlots")
+                   style = "height: 600px; overflow-y: scroll;",
+                   plotlyOutput("violinPlots", height="550px")
                  )
                )
              )
     ),
-    tabPanel("table",
+    tabPanel("Table",
              sidebarLayout(
                position = "right",
                sidebarPanel(
-                 style = "height: 400px; overflow-y: scroll;",
+                 style = "height: 600px; overflow-y: scroll;",
                  checkboxGroupInput(
                    inputId = "tableGenres",
                    label = "Genres:",
-                   choices = list("RPG" = "RPG", "Anime" = "Anime")
+                   choices = list_genres
                  )
                ),
                mainPanel(
                  wellPanel(
-                   style = "height: 400px; overflow-y: scroll;",
-                   plotOutput("table")
+                   style = "height: 600px; overflow-y: scroll;",
+                   plotOutput("tableSpot")
+                 )
+               )
+             )
+    ),
+    tabPanel("by price",
+             sidebarLayout(
+               position = "right",
+               sidebarPanel(
+                 style = "height: 600px; overflow-y: scroll;",
+                 checkboxGroupInput(
+                   inputId = "priceOS",
+                   label = "OS:",
+                   choices = list("Windows"="Windows", "Mac"="Mac", "Linux"="Linux")
+                 ),
+                 sliderInput(
+                   inputId="priceSlider",
+                   label="maximum price (in $):",
+                   min=0,
+                   max=100,
+                   value=0
+                 ),
+                 checkboxGroupInput(
+                   inputId = "priceGenres",
+                   label = "Genres:",
+                   choices = list_genres
+                 ),
+                 width = 4
+               ),
+               mainPanel(
+                 wellPanel(
+                   style = "height: 600px; overflow-y: scroll;",
+                   plotlyOutput("pricePlot")
                  )
                )
              )
     ),
     tabPanel("other",
-             "Here goes something else..."
+             "coming soon..."
     )
   )
 )
