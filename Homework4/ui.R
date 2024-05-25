@@ -1,4 +1,5 @@
 library(shiny)
+library(shinythemes)
 
 source("setup.R")
 
@@ -96,7 +97,7 @@ ui <- fluidPage(
                    label="release year:",
                    min=2007,
                    max=2024,
-                   value=0
+                   value=2007
                  ),
                  checkboxGroupInput(
                    inputId = "yearGenres",
@@ -136,13 +137,30 @@ ui <- fluidPage(
                mainPanel(
                  wellPanel(
                    style = "height: 600px; overflow-y: scroll;",
-                   plotlyOutput("pricePlot")
+                   plotlyOutput("playtimePlot")
                  )
                )
              )
     ),
-    tabPanel("other",
-             "to be continued..."
+    tabPanel("by language",
+             sidebarLayout(
+               position = "right",
+               sidebarPanel(
+                 style = "height: 600px; overflow-y: scroll;",
+                 checkboxGroupInput(
+                   inputId = "languagesBoxes",
+                   label = "Languages:",
+                   choices = list_languages
+                 ),
+                 width = 4
+               ),
+               mainPanel(
+                 wellPanel(
+                   style = "height: 600px; overflow-y: scroll;",
+                   plotlyOutput("languagePlot")
+                 )
+               )
+             )
     )
   )
 )
