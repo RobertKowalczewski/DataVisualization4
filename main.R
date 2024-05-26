@@ -10,10 +10,12 @@ normalize <- function(x) {
   return((x - min(x)) / (max(x) - min(x)))
 }
 
-data = read.csv("games.csv")
+data = read.csv("data/games.csv")
 
 data_separated_genres = data %>%
   separate_rows(Genres, sep = ",")
+
+sex_games = data_separated_genres %>% filter(Genres=="Nudity")
 
 
 counted = count(data_separated_genres, Genres) %>% filter(n > 100)
@@ -41,9 +43,9 @@ ggplot(data_RPG, aes(Genres, Average.playtime.forever)) + geom_violin(fill="whit
 
 
 
-#ggplot(data,
-# aes(x=Metacritic.score, y=(Positive+1)/(Negative+1))
-#) + geom_jitter(aes(alpha=0.4)) + geom_smooth(model=lm) + coord_cartesian(xlim=c(10, 100), ylim=c(0, 150))
+ggplot(data,
+ aes(x=Metacritic.score, y=(Positive+1)/(Negative+1))
+) + geom_point(aes(alpha=0.4)) + geom_smooth(model=lm) + coord_cartesian(xlim=c(10, 100), ylim=c(0, 150))
 
 
 #ggplot(data,

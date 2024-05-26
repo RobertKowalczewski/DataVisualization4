@@ -14,9 +14,11 @@ normalize <- function(x) {
 
 data <- read.csv("../data/games.csv")
 
+#data_separated_genres <- data %>%
+#  separate_rows(Genres, sep = ",") %>% 
+#  select(Genres)
 data_separated_genres <- data %>%
-  separate_rows(Genres, sep = ",") %>% 
-  select(Genres)
+  separate_rows(Genres, sep = ",") 
 
 genres <- count(data_separated_genres, Genres) %>%
   filter(n > 100) %>%
