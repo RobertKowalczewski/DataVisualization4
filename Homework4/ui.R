@@ -161,6 +161,14 @@ ui <- fluidPage(
                  )
                )
              )
+    ),
+    tabPanel("area plot",
+              fluidPage(
+                wellPanel(
+                  style = "height: 600px; overflow-y: scroll;",
+                  plotlyOutput("areaPlot", height="550px")
+                )
+              )
+            )
     )
-  )
 )
