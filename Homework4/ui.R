@@ -9,6 +9,7 @@ ui <- fluidPage(
   
   navbarPage(
     "Steam games",
+    header = tags$li(class = "dropdown", tags$a(href = "#", icon("steam"))),
     tabPanel("Violin",
              sidebarLayout(
                position = "right",
@@ -90,6 +91,14 @@ ui <- fluidPage(
                   plotlyOutput("areaPlot", height="550px"),
                 )
               )
-            )
+            ),
+    tabPanel("heatmap",
+             fluidPage(
+               wellPanel(
+                 style = "height: 600px; overflow-y: scroll;",
+                 plotlyOutput("heatmapPlot", height="550px"),
+               )
+             )
     )
+  )
 )
