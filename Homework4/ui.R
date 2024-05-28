@@ -8,8 +8,7 @@ ui <- fluidPage(
   theme = shinytheme("united"),
   
   navbarPage(
-    "Steam games",
-    header = tags$li(class = "dropdown", tags$a(href = "#", icon("steam"))),
+    title = div(img(src = "https://fontawesome.com/icons/square-steam?f=brands&s=solid"), alt = "Steam games"),
     tabPanel("Violin",
              sidebarLayout(
                position = "right",
@@ -97,6 +96,10 @@ ui <- fluidPage(
                wellPanel(
                  style = "height: 600px; overflow-y: scroll;",
                  plotlyOutput("heatmapPlot", height="550px"),
+               ),
+               wellPanel(
+                 radioButtons("chooseNormalizer", label = "normalize by:",
+                              choices = c("Year", "Category")),
                )
              )
     )
