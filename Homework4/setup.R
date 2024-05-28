@@ -116,6 +116,8 @@ agg_data_area <- agg_data_area %>%
 
 ####
 ### heatmap
+data_separated_categories = data %>%
+  separate_rows(Categories, sep = ",")
 data_separated_categories$date = as.Date(data_separated_categories$Release.date, format = "%b %d, %Y")
 
 data_separated_categories$year_month <- year(data_separated_categories$date)

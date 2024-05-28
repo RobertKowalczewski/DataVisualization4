@@ -63,15 +63,3 @@ for (i in 1:nrow(agg_data_wide)) {
 data_long_categories <- agg_data_wide %>%
   gather(key = "Category", value = "Value", -year_month)
 
-# Create the heatmap
-heatmap <- plot_ly(
-  data = data_long_categories,
-  x = ~year_month,
-  y = ~Category,
-  z = ~Value,
-  type = 'heatmap',
-  colors = colorRamp(c("blue", "green", "yellow", "red"))
-)
-
-# Display the heatmap
-heatmap

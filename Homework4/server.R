@@ -121,4 +121,19 @@ server <- function(input, output, session) {
     
     fig
   })
+  
+  output$heatmapPlot = renderPlotly({
+    # Create the heatmap
+    heatmap <- plot_ly(
+      data = data_long_categories,
+      x = ~year_month,
+      y = ~Category,
+      z = ~Value,
+      type = 'heatmap',
+      colors = colorRamp(c("blue", "green", "yellow", "red"))
+    )
+    
+    # Display the heatmap
+    heatmap
+  })
 }
