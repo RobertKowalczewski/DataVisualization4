@@ -41,6 +41,34 @@ ui <- fluidPage(
                position = "right",
                sidebarPanel(
                  style = "height: 600px; overflow-y: scroll;",
+                 
+                 sliderInput(
+                   inputId="playtimeSlider",
+                   label="average playtime (in hours):",
+                   min=0,
+                   max=1000,
+                   value=0
+                 ),
+                 checkboxInput("over1000", "1000+ hours", value=F),
+                 sliderInput(
+                   inputId="priceSlider",
+                   label="maximum price (in $):",
+                   min=0,
+                   max=100,
+                   value=0
+                 ),
+                 checkboxGroupInput(
+                   inputId = "priceOS",
+                   label = "OS:",
+                   choices = list("Windows"="Windows", "Mac"="Mac", "Linux"="Linux")
+                 ),
+                 sliderInput(
+                   inputId="yearSlider",
+                   label="release year:",
+                   min=2007,
+                   max=2024,
+                   value=2007
+                 ),
                  checkboxGroupInput(
                    inputId = "tableGenres",
                    label = "Genres:",
@@ -55,118 +83,11 @@ ui <- fluidPage(
                )
              )
     ),
-    tabPanel("by price",
-             sidebarLayout(
-               position = "right",
-               sidebarPanel(
-                 style = "height: 600px; overflow-y: scroll;",
-                 checkboxGroupInput(
-                   inputId = "priceOS",
-                   label = "OS:",
-                   choices = list("Windows"="Windows", "Mac"="Mac", "Linux"="Linux")
-                 ),
-                 sliderInput(
-                   inputId="priceSlider",
-                   label="maximum price (in $):",
-                   min=0,
-                   max=100,
-                   value=0
-                 ),
-                 checkboxGroupInput(
-                   inputId = "priceGenres",
-                   label = "Genres:",
-                   choices = list_genres
-                 ),
-                 width = 4
-               ),
-               mainPanel(
-                 wellPanel(
-                   style = "height: 600px; overflow-y: scroll;",
-                   plotlyOutput("pricePlot")
-                 )
-               )
-             )
-    ),
-    tabPanel("by year",
-             sidebarLayout(
-               position = "right",
-               sidebarPanel(
-                 style = "height: 600px; overflow-y: scroll;",
-                 sliderInput(
-                   inputId="yearSlider",
-                   label="release year:",
-                   min=2007,
-                   max=2024,
-                   value=2007
-                 ),
-                 checkboxGroupInput(
-                   inputId = "yearGenres",
-                   label = "Genres:",
-                   choices = list_genres
-                 ),
-                 width = 4
-               ),
-               mainPanel(
-                 wellPanel(
-                   style = "height: 600px; overflow-y: scroll;",
-                   plotlyOutput("datePlot")
-                 )
-               )
-             )
-    ),
-    tabPanel("by playtime",
-             sidebarLayout(
-               position = "right",
-               sidebarPanel(
-                 style = "height: 600px; overflow-y: scroll;",
-                 sliderInput(
-                   inputId="playtimeSlider",
-                   label="average playtime (in hours):",
-                   min=0,
-                   max=1000,
-                   value=0
-                 ),
-                 checkboxInput("over1000", "1000+ hours", value=F),
-                 checkboxGroupInput(
-                   inputId = "priceGenres",
-                   label = "Genres:",
-                   choices = list_genres
-                 ),
-                 width = 4
-               ),
-               mainPanel(
-                 wellPanel(
-                   style = "height: 600px; overflow-y: scroll;",
-                   plotlyOutput("playtimePlot")
-                 )
-               )
-             )
-    ),
-    tabPanel("by language",
-             sidebarLayout(
-               position = "right",
-               sidebarPanel(
-                 style = "height: 600px; overflow-y: scroll;",
-                 checkboxGroupInput(
-                   inputId = "languagesBoxes",
-                   label = "Languages:",
-                   choices = list_languages
-                 ),
-                 width = 4
-               ),
-               mainPanel(
-                 wellPanel(
-                   style = "height: 600px; overflow-y: scroll;",
-                   plotlyOutput("languagePlot")
-                 )
-               )
-             )
-    ),
     tabPanel("area plot",
               fluidPage(
                 wellPanel(
                   style = "height: 600px; overflow-y: scroll;",
-                  plotlyOutput("areaPlot", height="550px")
+                  plotlyOutput("areaPlot", height="550px"),
                 )
               )
             )
