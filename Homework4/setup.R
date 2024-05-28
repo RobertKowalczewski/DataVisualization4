@@ -4,6 +4,7 @@ library(tidyverse)
 library(tidyr)
 library(plotly)
 library(stringr)
+Sys.setlocale("LC_TIME", "en_US.UTF-8")
 
 log_transform <- function(x) {
   return(log1p(x))  # log1p is log(1 + x) to handle zero values
@@ -39,18 +40,18 @@ data_separated_genres <- data %>%
   separate_rows(Genres, sep = ",") 
 
 #####
-df_split <- data %>%
-  separate_rows(Genres, sep = ",")
+#df_split <- data %>%
+#  separate_rows(Genres, sep = ",")
 #df_split = df_split[c("Name", "Genres", "Metacritic.score")]
 
-df_split$Genres <- trimws(df_split$Genres)
-df_split <- df_split %>%
-  filter(Genres != "")
+#df_split$Genres <- trimws(df_split$Genres)
+#df_split <- df_split %>%
+#  filter(Genres != "")
 
 
-df_encoded <- df_split %>%
-  mutate(value = 1) %>%
-  pivot_wider(names_from = Genres, values_from = value, values_fill = list(value = 0))
+#df_encoded <- df_split %>%
+#  mutate(value = 1) %>%
+#  pivot_wider(names_from = Genres, values_from = value, values_fill = list(value = 0))
 #####
 
 genres <- count(data_separated_genres, Genres) %>%
@@ -82,3 +83,59 @@ for (lang in languages) {
 }
 
 violin_x <- c("Peak.CCU", "Metacritic.score", "Positive", "Negative")
+
+
+
+#### Area Plot
+data_area = data_separated_genres
+data_area$date = as.Date(data_area$Release.date, format = "%b %d, %Y")
+
+data_area$year_month <- year(data_area$date)
+data_area = data_area %>% filter(year_month <= 2024 & year_month >= 2005)
+
+data_area = data_area %>% filter(Genres != "") %>% filter(Release.date != "")
+data_area = data_area[c("Name", "Genres", "year_month")]
+
+genre_freq <- table(data_area$Genres)
+
+# Identify the top 5 most popular genres
+n=9
+top_genres <- names(sort(genre_freq, decreasing = TRUE))[1:n]
+
+# Create a new column to categorize genres
+data_area$category <- ifelse(data_area$Genres %in% top_genres, data_area$Genres, "Other")
+
+agg_data_area <- data_area %>%
+  group_by(year_month, category) %>%
+  summarise(count = n()) %>%
+  ungroup()
+agg_data_area <- agg_data_area %>%
+  group_by(year_month) %>%
+  mutate(proportion = count/sum(count)) %>%
+  ungroup()
+
+####
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

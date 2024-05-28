@@ -95,4 +95,30 @@ server <- function(input, output, session) {
     ggplotly(p)
     
   })
+  
+  output$areaPlot = renderPlotly({
+    fig <- plot_ly(
+      data = agg_data_area,
+      x = ~year_month,
+      y = ~proportion,
+      color = ~category,
+      type = 'scatter',
+      mode = 'none',
+      stackgroup = 'one', 
+      groupnorm = 'percent', 
+      fillcolor = 'tonexty'
+    )
+    
+    # Customize layout
+    fig <- fig %>%
+      layout(
+        title = "Proportion of 9 most popular genres over time",
+        xaxis = list(title = "Date"),
+        yaxis = list(title = "Proportion", showticklabels = FALSE),
+        showlegend = TRUE
+      )
+    
+    
+    fig
+  })
 }
