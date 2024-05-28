@@ -50,7 +50,7 @@ ui <- fluidPage(
                mainPanel(
                  wellPanel(
                    style = "height: 600px; overflow-y: scroll;",
-                   plotOutput("tableSpot")
+                   plotlyOutput("tableSpot")
                  )
                )
              )

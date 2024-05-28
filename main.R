@@ -10,10 +10,21 @@ normalize <- function(x) {
   return((x - min(x)) / (max(x) - min(x)))
 }
 
+
 data = read.csv("data/games.csv")
 
 data_separated_genres = data %>%
   separate_rows(Genres, sep = ",")
+
+data_filtered = data_separated_genres %>%
+  filter(Genres %in% c("Action", "Gore")) %>% arrange(Genres, desc(Metacritic.score))
+
+data_filtered = data_filtered[c("Name", "Metacritic.score", "Genres")]
+
+pivoted_data = data_filtered %>%
+  pivot_wider(names_from = Genres, values_from = Name) %>% unnest(Gore) 
+
+
 
 sex_games = data_separated_genres %>% filter(Genres=="Nudity")
 
