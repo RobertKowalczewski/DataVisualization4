@@ -6,10 +6,22 @@ source("setup.R")
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   theme = shinytheme("united"),
+  tags$style(
+    HTML(
+      "
+      html, body {
+        background-color: #B8860B;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+      "
+    )
+  ),
   
   navbarPage(
     "Steam games",
-    tabPanel("Violin",
+    tabPanel("Score",
              sidebarLayout(
                position = "right",
                sidebarPanel(
@@ -34,9 +46,10 @@ ui <- fluidPage(
                    plotlyOutput("violinPlots", height="550px")
                  )
                )
-             )
+             ),
+         h3("These violin plots how distributions of chosen score for every chosen genre.", style="color: #A52A2A;")
     ),
-    tabPanel("Table",
+    tabPanel("Query",
              sidebarLayout(
                position = "right",
                sidebarPanel(
@@ -81,17 +94,19 @@ ui <- fluidPage(
                    plotlyOutput("tableSpot")
                  )
                )
-             )
+             ),
+         h3("Adjust your prefered parameters to find your favourite game!", style="color: #A52A2A;")
     ),
-    tabPanel("area plot",
+    tabPanel("Popular genres",
               fluidPage(
                 wellPanel(
                   style = "height: 600px; overflow-y: scroll;",
                   plotlyOutput("areaPlot", height="550px")
                 )
-              )
+              ),
+             h3("Here are most popular genres, fell free to expand for more information!", style="color: #A52A2A;")
             ),
-    tabPanel("heatmap",
+    tabPanel("Popular tags",
              fluidPage(
                wellPanel(
                  style = "height: 600px; overflow-y: scroll;",

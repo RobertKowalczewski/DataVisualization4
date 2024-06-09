@@ -4,7 +4,13 @@ library(tidyverse)
 library(tidyr)
 library(plotly)
 library(stringr)
+library(reshape2)
+
 Sys.setlocale("LC_TIME", "en_US.UTF-8")
+
+minmax <- function(x) {
+  return((x - min(x)) / (max(x) - min(x)))
+}
 
 log_transform <- function(x) {
   return(log1p(x))  # log1p is log(1 + x) to handle zero values

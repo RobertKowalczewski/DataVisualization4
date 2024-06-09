@@ -1,4 +1,5 @@
 library(shiny)
+library(lubridate)
 
 source("setup.R")
 
@@ -46,8 +47,15 @@ server <- function(input, output, session) {
   
   output$tableSpot = renderPlotly({
     n = 10
-    
-    data_filtered = data %>% filter(sapply(Genres, function(row) check_all_genres_matched(row, input$tableGenres))) %>% 
+    windows = ifelse("Windows" %in% input$priceOS, "True", "False")
+    mac = ifelse("Mac" %in% input$priceOS, "True", "False")
+    linux = ifelse("Linux" %in% input$priceOS, "True", "False")
+    data_filtered = data %>% 
+      filter(sapply(Genres, function(row) check_all_genres_matched(row, input$tableGenres)) &
+        year(mdy(Release.date)) <= input$yearSlider &
+        Price <= input$priceSlider &
+        (Average.playtime.forever <= input$playtimeSlider | input$over1000) & 
+        (Windows==windows | Linux==linux | Mac==mac)) %>% 
       arrange(desc(Metacritic.score))
     
     #data_filtered = df_encoded %>% filter(rowSums(select(., all_of(df_encoded[[input$tableGenres]]))) == length(columns_to_check))
