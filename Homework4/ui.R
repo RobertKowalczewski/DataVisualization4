@@ -21,6 +21,20 @@ ui <- fluidPage(
   
   navbarPage(
     "Steam games",
+    tabPanel("Home",
+             style="color: #A52A2A; hr{color: #A52A2A};",
+             h1("Hello, welcome to the Steam Games dashboard!"),
+             hr(),
+             h2("Available items:"),
+             h4("Score - you can check how good games from different genres are"),
+             h4("Query - you can find games based on your specific criteria"),
+             h4("Popular genres - you can view popularity of genres across the time"),
+             h4("Popular tags - you can check how popular were games with different tags across the years"),
+             hr(),
+             h2("Authors:"),
+             h3("Robert Kowalczewski 156040"),
+             h3("Marcin Leszczynski 156061")
+    ),
     tabPanel("Score",
              sidebarLayout(
                position = "right",
@@ -36,7 +50,8 @@ ui <- fluidPage(
                  checkboxGroupInput(
                    inputId = "violinGenres",
                    label = "Genres:",
-                   choices = list_genres
+                   choices = list_genres,
+                   selected = "Indie"
                  ),
                  width = 4
                ),
@@ -47,7 +62,7 @@ ui <- fluidPage(
                  )
                )
              ),
-         h3("These violin plots how distributions of chosen score for every chosen genre.", style="color: #A52A2A;")
+             h3("These violin plots how distributions of chosen score for every chosen genre.", style="color: #A52A2A;")
     ),
     tabPanel("Query",
              sidebarLayout(
@@ -95,28 +110,25 @@ ui <- fluidPage(
                  )
                )
              ),
-         h3("Adjust your prefered parameters to find your favourite game!", style="color: #A52A2A;")
+             h3("Adjust your prefered parameters to find your favourite game!", style="color: #A52A2A;")
     ),
     tabPanel("Popular genres",
-              fluidPage(
-                wellPanel(
-                  style = "height: 600px; overflow-y: scroll;",
-                  plotlyOutput("areaPlot", height="550px")
-                )
-              ),
+             fluidPage(
+               wellPanel(
+                 style = "height: 600px; overflow-y: scroll;",
+                 plotlyOutput("areaPlot", height="550px")
+               )
+             ),
              h3("Here are most popular genres, fell free to expand for more information!", style="color: #A52A2A;")
-            ),
+    ),
     tabPanel("Popular tags",
              fluidPage(
                wellPanel(
                  style = "height: 600px; overflow-y: scroll;",
                  plotlyOutput("heatmapPlot", height="550px")
                ),
-               wellPanel(
-                 radioButtons("chooseNormalizer", label = "normalize by:",
-                              choices = c("Year", "Category"))
-               )
-             )
+             ),
+             h3("Here are tags, and they're shown by how popular their are", style="color: #A52A2A;")
     )
   )
 )

@@ -1,0 +1,13 @@
+name: homework4
+title: Homework4
+username: kurczaczek
+account: kurczaczek
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12154331
+bundleId: 8720469
+url: https://kurczaczek.shinyapps.io/homework4/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .RData

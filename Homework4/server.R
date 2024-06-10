@@ -61,7 +61,7 @@ server <- function(input, output, session) {
     #data_filtered = df_encoded %>% filter(rowSums(select(., all_of(df_encoded[[input$tableGenres]]))) == length(columns_to_check))
     
     data_filtered = data_filtered[1:n,]
-    data_filtered = data_filtered[c("Name", "Genres", "Metacritic.score")]
+    data_filtered = data_filtered[c("Name", "Genres", "Metacritic.score", "Price")]
     
     #sorted_games_list <- list()
     #for (genre in input$tableGenres) {
@@ -72,14 +72,14 @@ server <- function(input, output, session) {
     
     p = plot_ly(type="table", columnwidth = rep(100, length(input$tableGenres)),
                 header = list(
-                  values = "games1!!",
+                  values = c("name", "price"),
                   align = c("center"),
                   line = list(width = 1, color = 'black'),
                   fill = list(color = c("grey", "grey")),
                   font = list(family = "Arial", size = 14, color = "white")
                 ),
                 cells = list(
-                  values = rbind(data_filtered$Name),
+                  values = rbind(data_filtered$Name, data_filtered$Price),
                   align = c("center"),
                   line = list(color = "black", width = 1),
                   font = list(family = "Arial", size = 12, color = c("black"))
@@ -114,7 +114,7 @@ server <- function(input, output, session) {
       mode = 'none',
       stackgroup = 'one', 
       groupnorm = 'percent', 
-      fillcolor = 'tonexty'
+      fillcolor = ''
     )
     
     # Customize layout

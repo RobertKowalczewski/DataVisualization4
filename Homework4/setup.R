@@ -37,7 +37,7 @@ check_all_genres_matched <- function(genres_list, genres_to_check) {
 }
 
 
-data <- read.csv("../data/games.csv")
+data <- read.csv("data/games.csv")
 
 #data_separated_genres <- data %>%
 #  separate_rows(Genres, sep = ",") %>% 
@@ -166,13 +166,11 @@ softmax <- function(x) {
 
 for (i in 1:nrow(agg_data_wide)) {
   row <- agg_data_wide[i, ]
-  print(row)
   # Skip the first row
   # Apply softmax to the row (excluding the first element)
   softmax_row <- softmax(minmax(row[-1]))
   # Add the softmax probabilities back to the dataframe
   agg_data_wide[i, -1] <- softmax_row
-  print(agg_data_wide[i, -1])
 }
 
 # Reshape the data into long format
